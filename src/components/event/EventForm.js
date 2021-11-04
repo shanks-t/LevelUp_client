@@ -106,8 +106,7 @@ export const EventForm = () => {
                         time: currentEvent.time,
                     }
                     createEvent(event)
-                    console.log(event)
-                    debugger
+                    .then(() => history.push('/events'))
                 }}
                 className="btn btn-primary">Create Event</button>
         </form>
