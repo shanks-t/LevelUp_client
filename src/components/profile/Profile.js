@@ -10,8 +10,6 @@ export const Profile = () => {
 
     useEffect(() => {
         getProfile().then(data => changeProfile(data))
-        .then(setAttending(profile.attending))
-        .then(setHosting(profile.hosting))
     }, [])
     useEffect(() => {
         console.log('profile', profile)
@@ -28,10 +26,10 @@ export const Profile = () => {
                     <h3>Your Info</h3>
                 </header>
                 <div className="profile__name">
-                    Welcome: {profile.gamer.user.first_name} {profile.gamer.user.last_name}
+                    Welcome: {profile.gamer?.user.first_name} {profile.gamer?.user.last_name}
                 </div>
-                <div className="profile__username">Username: {profile.gamer.user.username}</div>
-                <div className="profile__bio">About you: {profile.gamer.bio}</div>
+                <div className="profile__username">Username: {profile.gamer?.user.username}</div>
+                <div className="profile__bio">About you: {profile.gamer?.bio}</div>
             </section>
             <section className="profile__registrations">
                 <header className="registrations__header">
@@ -39,7 +37,7 @@ export const Profile = () => {
                 </header>
                 <div className="registrations">
                     {
-                        attending.map(
+                        profile.attending?.map(
                             item => (
                             <>
                             <h3>{item.game.title}</h3>
@@ -57,7 +55,7 @@ export const Profile = () => {
                 </header>
                 <div className="registrations">
                     {
-                    hosting.map(
+                    profile.hosting?.map(
                         item => (
                             <>
                             <h3>{item.game.title}</h3>

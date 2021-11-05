@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react"
 import { useHistory } from "react-router"
 import { getEvents, joinEvent, deleteEvent, leaveEvent } from "./EventManager.js"
+import { EventCreateForm } from "./EventCreateForm.js"
+import { EventUpdateForm } from "./EventUpdateForm.js"
 
 export const EventList = (props) => {
     const [ events, updateEvents ] = useState([])
+    const [ showUpdateForm, setShowUpdateForm ] = useState(false)
+    const [ showCreateForm, setShowCreateForm ] = useState(false)
+    const [ eventObjectForUpdate, setEventObjectForUpdate ] = useState([])
     const history = useHistory()
 
 
@@ -17,15 +22,46 @@ export const EventList = (props) => {
 
     useEffect(() => {
         console.log('events', events)
-    }, [events])
+        console.log('eventToUpdate', eventObjectForUpdate)
+    }, [events, eventObjectForUpdate])
 
+    const handleUpdateFormToggle = () => {
+        if(showUpdateForm) {
+            setShowUpdateForm(false)
+        }else{
+            setShowUpdateForm(true)
+        }
+    }
+    const handleCreateFormToggle = () => {
+        if(showUpdateForm) {
+            setShowCreateForm(false)
+        }else{
+            setShowCreateForm(true)
+        }
+    }
+
+    const updateFormJSX =
+        <div>
+            <EventUpdateForm events={events}/>
+        </div>
+    const createFormJSX =
+        <div>
+            <EventCreateForm eventToUpdate={eventObjectForUpdate}/>
+        </div>
 
     return (
-        <article className="events">
+        <>
+        {showCreateForm ? createFormJSX
+            : (showUpdateForm) ? updateFormJSX
+            
+            :
+
+            <article className="events">
             <button className="btn btn-2 btn-sep icon-create"
                 onClick={() => {
-                    history.push("/events/new")
+                    handleCreateFormToggle()
                 }}>Create A New Event</button>
+            
             {
                 events.map(event => {
                     return <section key={`event--${event.id}`} className="event">
@@ -35,8 +71,14 @@ export const EventList = (props) => {
                         onClick={
                             () => { 
                                 deleteEvent(event.id)
-                                    .then(()=> eventFetcher())}}>delete event
-                                </button>
+                                    .then(()=> eventFetcher())
+                                    }}>delete event</button>
+                                <button className="btn btn-2 btn-sep icon-create"
+                        onClick={
+                            () => {
+                                handleUpdateFormToggle()
+                                setEventObjectForUpdate(event)
+                            }}>Update Event</button>
                         <div className="event__skillLevel">{event.date} @ {event.time}</div>
                         {
                             event.joined
@@ -51,5 +93,9 @@ export const EventList = (props) => {
                 })
             }
         </article>
+
+        }
+    </>
+        
     )
 }
