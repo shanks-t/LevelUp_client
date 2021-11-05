@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react"
 import { useHistory } from "react-router"
-import { getEvents, joinEvent, deleteEvent } from "./EventManager.js"
+import { getEvents, joinEvent, deleteEvent, leaveEvent } from "./EventManager.js"
 
 export const EventList = (props) => {
-    const [ events, setEvents ] = useState([])
+    const [ events, updateEvents ] = useState([])
     const history = useHistory()
 
-    const getAllEvents = () => {
-        getEvents().then(eventData => setEvents(eventData))
+
+    const eventFetcher = () => {
+        getEvents().then(data => updateEvents(data))
     }
 
     useEffect(() => {
-        getAllEvents()
+        eventFetcher()
     }, [])
-
 
     useEffect(() => {
         console.log('events', events)
@@ -35,16 +35,18 @@ export const EventList = (props) => {
                         onClick={
                             () => { 
                                 deleteEvent(event.id)
-                                    .then(()=>getAllEvents())}}>delete event
+                                    .then(()=> eventFetcher())}}>delete event
                                 </button>
                         <div className="event__skillLevel">{event.date} @ {event.time}</div>
-                        <button className="btn btn-2"
-                                onClick={
-                                    () => {
-                                        joinEvent(event.id, getAllEvents)
-                                    }
-                                }
-                        >Join</button>
+                        {
+                            event.joined
+                                ? <button className="btn btn-3"
+                                    onClick={() => leaveEvent(event.id).then(() => eventFetcher())}
+                                    >Leave</button>
+                                : <button className="btn btn-2"
+                                    onClick={() => joinEvent(event.id).then(() => eventFetcher())}
+                                    >Join</button>
+                        }
                     </section>
                 })
             }

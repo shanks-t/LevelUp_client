@@ -4,6 +4,7 @@ import { GameList } from "./game/GameList"
 import { EventList } from "./event/EventList"
 import { GameForm } from "./game/GameForm"
 import { EventForm } from "./event/EventForm"
+import { Profile } from "./profile/Profile"
 
 export const ApplicationViews = () => {
     return <>
@@ -22,6 +23,9 @@ export const ApplicationViews = () => {
             </Route>
             <Route exact path="/events/new">
                 <EventForm />
+            </Route>
+            <Route exact path="/profile">
+                <Profile />
             </Route>
         </main>
     </>
