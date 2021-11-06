@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom"
 import { createEvent } from "./EventManager"
 import { getGames } from "../game/GameManager"
 
-export const EventUpdateForm = ( {eventToUpdate}) => {
+export const EventUpdateForm = ( {eventToUpdate, showForm}) => {
     const history = useHistory()
     const [ games, setGames ] = useState([])
     const [currentEvent, setCurrentEvent] = useState({
@@ -57,12 +57,12 @@ export const EventUpdateForm = ( {eventToUpdate}) => {
                     <label htmlFor="gameId">Game: </label>
                     <select name="gameId" className="form-control"
                         value={ currentEvent.gameId }
-                        defaultValue={eventToUpdate}
+                        defaultValue={eventToUpdate?.game.id}
                         onChange={ changeEventGameState }>
                         <option value='0'>Select a game...</option>
                         {
                             games.map(game => (
-                                <option value={game.id}>{game.title}</option>
+                                <option >{game.title}</option>
                             ))
                         }
                     </select>
@@ -73,6 +73,7 @@ export const EventUpdateForm = ( {eventToUpdate}) => {
                     <label htmlFor="title">description: </label>
                     <input type="text" name="description" required autoFocus className="form-control"
                         value={currentEvent.description}
+                        placeholder={eventToUpdate?.description}
                         onChange={changeEventDescriptionState}
                     />
                 </div>
@@ -110,7 +111,8 @@ export const EventUpdateForm = ( {eventToUpdate}) => {
                     .then(() => history.push('/events'))
                 }}
                 className="btn btn-primary">Create Event</button>
-                but
+                <button
+                onClick={()=>showForm(false)}>cancel</button>
         </form>
     )   
 }

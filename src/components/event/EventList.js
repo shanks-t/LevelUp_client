@@ -42,7 +42,7 @@ export const EventList = (props) => {
 
     const updateFormJSX =
         <div>
-            <EventUpdateForm events={events}/>
+            <EventUpdateForm events={events} showForm={setShowUpdateForm}/>
         </div>
     const createFormJSX =
         <div>
