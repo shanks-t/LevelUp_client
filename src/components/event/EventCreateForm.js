@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom"
 import { createEvent } from "./EventManager"
 import { getGames } from "../game/GameManager"
 
-export const EventForm = () => {
+export const EventCreateForm = () => {
     const history = useHistory()
     const [ games, setGames ] = useState([])
     const [currentEvent, setCurrentEvent] = useState({
@@ -109,6 +109,7 @@ export const EventForm = () => {
                     .then(() => history.push('/events'))
                 }}
                 className="btn btn-primary">Create Event</button>
+                but
         </form>
-    )
+    )   
 }
