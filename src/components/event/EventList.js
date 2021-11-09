@@ -9,7 +9,6 @@ export const EventList = (props) => {
     const [ showUpdateForm, setShowUpdateForm ] = useState(false)
     const [ showCreateForm, setShowCreateForm ] = useState(false)
     const [ eventObjectForUpdate, setEventObjectForUpdate ] = useState([])
-    const history = useHistory()
 
 
     const eventFetcher = () => {

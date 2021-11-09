@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { createGame, getGameTypes } from './GameManager.js'
 
 
-export const GameForm = () => {
+export const GameCreateForm = () => {
     const history = useHistory()
     const [gameTypes, setGameTypes] = useState([])
 
