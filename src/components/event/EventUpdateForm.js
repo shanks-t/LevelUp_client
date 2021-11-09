@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from "react"
 import { useHistory } from "react-router-dom"
-import { createEvent } from "./EventManager"
+import { updateEvent } from "./EventManager"
 import { getGames } from "../game/GameManager"
 
-export const EventUpdateForm = ( {eventToUpdate, showForm}) => {
+
+export const EventUpdateForm = ( {eventToUpdate, setShowUpdateForm}) => {
     const history = useHistory()
+    const [ updatedEventState, setUpdatedEventState ] = useState({})
     const [ games, setGames ] = useState([])
-    const [currentEvent, setCurrentEvent] = useState({
-        gameId: 0,
-        organizer: localStorage.getItem('lu_token'),
-        description: '',
-        date: '',
-        time: '',
-    })
 
     
     useEffect(() => {
@@ -22,32 +17,26 @@ export const EventUpdateForm = ( {eventToUpdate, showForm}) => {
 
     useEffect(() => {
         console.log("games", games)
-        console.log('eventState',currentEvent)
+        console.log('eventToUpdate', eventToUpdate)
+        console.log('updatedEvent', updatedEventState)
 
-    }, [games, currentEvent])
+    }, [games,  eventToUpdate, updatedEventState])
 
 
-    const changeEventGameState = (domEvent) => {
-        const newEventState = {...currentEvent}
-        newEventState.gameId = event.target.value
-        setCurrentEvent(newEventState)
+    const handleOnChange = (event) => {
+        const copyEvent = {...eventToUpdate}
+        copyEvent[event.target.name] = event.target.value
+        setUpdatedEventState(copyEvent)
     }
 
-    const changeEventDescriptionState = (domEvent) => {
-        const newEventState = {...currentEvent}
-        newEventState.description = event.target.value
-        setCurrentEvent(newEventState)
+    const submitEvent = (event) => {
+        event.preventDefault()
+
+        updateEvent(updatedEventState).then(() => { 
+            setShowUpdateForm(false)
+        })
     }
-    const changeEventDateState = (domEvent) => {
-        const newEventState = {...currentEvent}
-        newEventState.date = event.target.value
-        setCurrentEvent(newEventState)
-    }
-    const changeEventTimeState = (domEvent) => {
-        const newEventState = {...currentEvent}
-        newEventState.time = event.target.value
-        setCurrentEvent(newEventState)
-    }
+
 
     return (
         <form className="eventForm">
@@ -56,14 +45,18 @@ export const EventUpdateForm = ( {eventToUpdate, showForm}) => {
                 <div className="form-group">
                     <label htmlFor="gameId">Game: </label>
                     <select name="gameId" className="form-control"
-                        value={ currentEvent.gameId }
-                        defaultValue={eventToUpdate?.game.id}
-                        onChange={ changeEventGameState }>
+                        // value={ eventToUpdate.game.title }
+                        defaultValue={eventToUpdate?.game.title}
+                        onChange={ handleOnChange }>
                         <option value='0'>Select a game...</option>
                         {
-                            games.map(game => (
-                                <option >{game.title}</option>
-                            ))
+                            games.map((game) => 
+                                (
+                                    game.id === eventToUpdate.game.id ?
+                                    <option selected value={game.id}>{game.title}</option>
+                                    : <option value={game.id}>{game.title}</option>
+                                )
+                            )
                         }
                     </select>
                 </div>
@@ -72,18 +65,18 @@ export const EventUpdateForm = ( {eventToUpdate, showForm}) => {
                 <div className="form-group">
                     <label htmlFor="title">description: </label>
                     <input type="text" name="description" required autoFocus className="form-control"
-                        value={currentEvent.description}
+                        defaultValue={eventToUpdate.description}
                         placeholder={eventToUpdate?.description}
-                        onChange={changeEventDescriptionState}
+                        onChange={handleOnChange}
                     />
                 </div>
             </fieldset>
             <fieldset>
                 <div className="form-group">
                     <label htmlFor="date">date: </label>
-                    <input type="date" name="description" required autoFocus className="form-control"
-                        value={currentEvent.date}
-                        onChange={changeEventDateState}
+                    <input type="date" name="date" required autoFocus className="form-control"
+                        defaultValue={eventToUpdate.date}
+                        onChange={handleOnChange}
                     />
                 </div>
             </fieldset>
@@ -91,26 +84,15 @@ export const EventUpdateForm = ( {eventToUpdate, showForm}) => {
                 <div className="form-group">
                     <label htmlFor="time">time: </label>
                     <input type="time" name="time" required autoFocus className="form-control"
-                        value={currentEvent.time}
-                        onChange={changeEventTimeState}
+                        defaultValue={eventToUpdate.time}
+                        onChange={handleOnChange}
                     />
                 </div>
             </fieldset>
 
             <button type="submit"
-                onClick={evt => {
-                    evt.preventDefault()
-
-                    const event = {
-                        gameId: parseInt(currentEvent.gameId),
-                        description: currentEvent.description,
-                        date: currentEvent.date,
-                        time: currentEvent.time,
-                    }
-                    createEvent(event)
-                    .then(() => history.push('/events'))
-                }}
-                className="btn btn-primary">Create Event</button>
+                onClick={submitEvent}
+                className="btn btn-primary">Update Event</button>
                 <button
                 onClick={()=>showForm(false)}>cancel</button>
         </form>

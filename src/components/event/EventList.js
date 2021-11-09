@@ -9,7 +9,6 @@ export const EventList = (props) => {
     const [ showUpdateForm, setShowUpdateForm ] = useState(false)
     const [ showCreateForm, setShowCreateForm ] = useState(false)
     const [ eventObjectForUpdate, setEventObjectForUpdate ] = useState([])
-    const history = useHistory()
 
 
     const eventFetcher = () => {
@@ -42,11 +41,11 @@ export const EventList = (props) => {
 
     const updateFormJSX =
         <div>
-            <EventUpdateForm events={events} showForm={setShowUpdateForm}/>
+            <EventUpdateForm eventToUpdate={eventObjectForUpdate} setShowUpdateForm={setShowUpdateForm}/>
         </div>
     const createFormJSX =
         <div>
-            <EventCreateForm eventToUpdate={eventObjectForUpdate}/>
+            <EventCreateForm setShowCreateForm={setShowCreateForm}/>
         </div>
 
     return (

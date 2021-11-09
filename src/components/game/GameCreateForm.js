@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { createGame, getGameTypes } from './GameManager.js'
 
 
-export const GameForm = () => {
+export const GameCreateForm = ({ setShowCreateForm }) => {
     const history = useHistory()
     const [gameTypes, setGameTypes] = useState([])
 
@@ -18,6 +18,10 @@ export const GameForm = () => {
         getGameTypes().then(gameTypeData => setGameTypes(gameTypeData))
     }, [])
 
+    useEffect(() => {
+        console.log('game', game)
+    }, [game])
+
 
 
     const handleOnChange = (event) => {
@@ -29,9 +33,7 @@ export const GameForm = () => {
     const saveGame = (event) => {
         event.preventDefault()
 
-        createGame(game).then(() => { 
-            history.push('/games')
-        })
+        setShowCreateForm(false)
     }
 
 
@@ -72,6 +74,7 @@ export const GameForm = () => {
             <button type="submit"
                 onClick={saveGame}
                 className="btn btn-primary">Save Game</button>
+            <button onClick={()=>setShowCreateForm(false)}>cancel</button>
         </form>
     )
 }
