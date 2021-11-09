@@ -22,7 +22,7 @@ export const GameUpdateForm = ( {gameToUpdate, setShowUpdateForm}) => {
 
     const handleOnChange = (event) => {
         const copyGame = {...gameToUpdate}
-        copyGame[event.target.name] = parseInt(event.target.value)
+        copyGame[event.target.name] = event.target.value
         setUpdatedGameState(copyGame)
     }
 

@@ -22,25 +22,25 @@ export const GameList = (props) => {
 
     useEffect(() => {
         gameFetcher()
-    }, [showUpdateForm])
+    }, [showUpdateForm, showCreateForm])
 
     useEffect(() => {
         console.log('games', games)
         console.log('gameToUpdate', gameObjectForUpdate)
-    }, [games, gameObjectForUpdate])
+        console.log('showCreate', showCreateForm)
+        console.log('showUpdate', showUpdateForm)
+    }, [games, gameObjectForUpdate, showCreateForm, showUpdateForm])
 
     const handleUpdateFormToggle = () => {
         if(showUpdateForm) {
             setShowUpdateForm(false)
-            gameFetcher()
         }else{
             setShowUpdateForm(true)
         }
     }
     const handleCreateFormToggle = () => {
-        if(showUpdateForm) {
+        if(showCreateForm) {
             setShowCreateForm(false)
-            gameFetcher()
         }else{
             setShowCreateForm(true)
         }
