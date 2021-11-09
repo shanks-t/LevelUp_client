@@ -12,6 +12,7 @@ export const EventCreateForm = () => {
         description: '',
         date: '',
         time: '',
+        joined: false
     })
 
     
@@ -104,12 +105,12 @@ export const EventCreateForm = () => {
                         description: currentEvent.description,
                         date: currentEvent.date,
                         time: currentEvent.time,
+                        joined: false
                     }
                     createEvent(event)
                     .then(() => history.push('/events'))
                 }}
                 className="btn btn-primary">Create Event</button>
-                but
         </form>
     )   
 }
